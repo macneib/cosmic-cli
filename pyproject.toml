@@ -1,0 +1,13 @@
+[project]
+name = "cosmic"
+version = "0.1.0"
+description = "A simple CLI tool"
+requires-python = ">=3.12"
+dependencies = ["click>=8.0.0"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+cosmic = "cosmic.cli:cli"
