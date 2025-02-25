@@ -25,7 +25,7 @@ def run_command(command: str, shell: bool = False) -> subprocess.CompletedProces
     """Run a shell command and handle errors."""
     try:
         if shell:
-            result = subprocess.run(command, shell=True, check=True, text=True, capture_output=T`rue)
+            result = subprocess.run(command, shell=True, check=True, text=True, capture_output=True)
         else:
             result = subprocess.run(command.split(), check=True, text=True, capture_output=True)
         return result
@@ -182,10 +182,18 @@ def install_cilium():
     # Add Helm repo and install Cilium
     run_command("helm repo add cilium https://helm.cilium.io/")
     run_command(
-        "helm install cilium cilium/cilium --version 1.17.1 "
+        "helm upgrade --install cilium cilium/cilium --version 1.17.1 "
         "--namespace kube-system "
         "--set image.pullPolicy=IfNotPresent "
-        "--set ipam.mode=kubernetes",
+        "--set ipam.mode=kubernetes "
+        "--set cni.install=true "
+        "--set cni.chainingMode=generic-veth "
+        "--set hubble.relay.enabled=true "
+        "--set hubble.ui.enabled=true "
+        "--set kubeProxyReplacement=true "
+        "--set loadBalancer.l7.backend=envoy "
+        "--set arp.enabled=true",
+
         shell=True
     )
     
